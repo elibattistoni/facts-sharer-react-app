@@ -16,8 +16,7 @@ const App = () => {
   return (
     <Fragment>
       <Header onToggleForm={toggleStateForm} />
-      <NewFactForm isFormVisible={formIsVisible} />
-
+      {formIsVisible && <NewFactForm />}
       <main className="main">
         <CategoryFilter />
         <FactsList />

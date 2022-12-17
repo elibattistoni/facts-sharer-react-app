@@ -1,9 +1,8 @@
 import styles from "./NewFactForm.module.css";
 
 const NewFactForm = (props) => {
-  const stateForm = !props.isFormVisible ? "hidden" : "";
   return (
-    <form className={`${styles["fact-form"]} ${stateForm}`} onSubmit={() => {}}>
+    <form className={styles["fact-form"]} onSubmit={() => {}}>
       <input type="text" placeholder="Share a fact with the world..." />
       <span>200</span>
       <input type="text" placeholder="Trustworthy source..." />
