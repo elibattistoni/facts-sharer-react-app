@@ -1,8 +1,9 @@
 import styles from "./NewFactForm.module.css";
 
 const NewFactForm = (props) => {
+  const stateForm = !props.isFormVisible ? "hidden" : "";
   return (
-    <form className={(styles["fact-form"], styles.hidden)}>
+    <form className={`${styles["fact-form"]} ${stateForm}`} onSubmit={() => {}}>
       <input type="text" placeholder="Share a fact with the world..." />
       <span>200</span>
       <input type="text" placeholder="Trustworthy source..." />
@@ -12,7 +13,9 @@ const NewFactForm = (props) => {
         <option value="science">Science</option>
         <option value="finance">Finance</option>
       </select>
-      <button className="btn btn-large">Post</button>
+      <button className="btn btn-large" onClick={() => {}}>
+        Post
+      </button>
     </form>
   );
 };
