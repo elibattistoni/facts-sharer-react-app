@@ -15,7 +15,7 @@ const App = () => {
 
   return (
     <Fragment>
-      <Header onToggleForm={toggleStateForm} />
+      <Header onToggleForm={toggleStateForm} isOpen={formIsVisible} />
       {formIsVisible && <NewFactForm />}
       <main className="main">
         <CategoryFilter />

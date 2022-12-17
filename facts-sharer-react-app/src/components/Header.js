@@ -8,7 +8,7 @@ const Header = (props) => {
         <h1>Today I Learned</h1>
       </div>
       <button className="btn btn-large btn-open" onClick={props.onToggleForm}>
-        Share a fact
+        {props.isOpen ? "Close" : "Share a fact"}
       </button>
     </header>
   );
