@@ -5,14 +5,13 @@ import styles from "./NewFactForm.module.css";
 const NewFactForm = (props) => {
   const [enteredText, setEnteredText] = useState("");
   const [enteredSource, setEnteredSource] = useState("");
-  const [remainingChars, setRemainingChars] = useState(200);
   const [enteredCategory, setEnteredCategory] = useState("default");
   const [formIsValid, setFormIsValid] = useState(false);
+  const numChars = enteredText.length;
 
   // handler functions for text and source
   const textChangeHandler = (e) => {
     setEnteredText(e.target.value);
-    setRemainingChars(200 - e.target.value.length);
   };
   const sourceChangeHandler = (e) => setEnteredSource(e.target.value);
   const categoryChangeHandler = (e) => setEnteredCategory(e.target.value);
@@ -44,7 +43,6 @@ const NewFactForm = (props) => {
     setEnteredText("");
     setEnteredSource("");
     setEnteredCategory("default");
-    setRemainingChars(200);
   };
 
   let classNameButton = "btn btn-large";
@@ -62,7 +60,7 @@ const NewFactForm = (props) => {
         value={enteredText}
         onChange={textChangeHandler}
       />
-      <span>{remainingChars}</span>
+      <span>{200 - numChars}</span>
       <input
         type="text"
         placeholder="Source..."
@@ -77,7 +75,7 @@ const NewFactForm = (props) => {
           </option>
         ))}
       </select>
-      <button className={classNameButton} type="submit">
+      <button className={classNameButton} type="submit" disabled={!formIsValid}>
         Post
       </button>
     </form>
