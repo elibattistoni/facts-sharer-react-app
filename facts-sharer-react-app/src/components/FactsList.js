@@ -1,16 +1,15 @@
-import { initialFacts } from "../data";
 import Fact from "./Fact";
 
-const FactsList = () => {
-  const facts = (
+const FactsList = ({ facts }) => {
+  const factsList = (
     <ul className="facts-list">
-      {initialFacts.map((fact) => (
+      {facts.map((fact) => (
         <Fact fact={fact} key={fact.id} />
       ))}
     </ul>
   );
 
-  return <section>{facts}</section>;
+  return <section>{factsList}</section>;
 };
 
 export default FactsList;

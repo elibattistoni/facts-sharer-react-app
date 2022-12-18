@@ -3,6 +3,7 @@ import CategoryFilter from "./components/CategoryFilters";
 import FactsList from "./components/FactsList";
 import Header from "./components/Header";
 import NewFactForm from "./components/NewFactForm";
+import { initialFacts } from "./data";
 import "./style.css";
 
 const App = () => {
@@ -13,13 +14,19 @@ const App = () => {
     setFormIsVisible((currentState) => !currentState);
   };
 
+  // state of the facts
+  const [facts, setFacts] = useState(initialFacts);
+  const addFactHandler = (newFact) => {
+    setFacts((currentFacts) => [newFact, ...currentFacts]);
+  };
+
   return (
     <Fragment>
       <Header onToggleForm={toggleStateForm} isOpen={formIsVisible} />
-      {formIsVisible && <NewFactForm />}
+      {formIsVisible && <NewFactForm onAddNewFact={addFactHandler} />}
       <main className="main">
         <CategoryFilter />
-        <FactsList />
+        <FactsList facts={facts} />
       </main>
     </Fragment>
   );

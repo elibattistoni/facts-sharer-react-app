@@ -2,6 +2,16 @@ import { useEffect, useState } from "react";
 import { CATEGORIES } from "../data";
 import styles from "./NewFactForm.module.css";
 
+const isValidHttpUrl = (string) => {
+  let url;
+  try {
+    url = new URL(string);
+  } catch (_) {
+    return false;
+  }
+  return url.protocol === "http:" || url.protocol === "https:";
+};
+
 const NewFactForm = (props) => {
   const [enteredText, setEnteredText] = useState("");
   const [enteredSource, setEnteredSource] = useState("");
@@ -19,31 +29,18 @@ const NewFactForm = (props) => {
   // use the useEffect Hook to evaluate whether form is valid
   useEffect(() => {
     const identifier = setTimeout(() => {
-      console.log("check form validity");
       setFormIsValid(
-        enteredText.trim().length > 5 &&
-          enteredSource.includes("https://") &&
+        enteredText.trim().length > 6 &&
+          isValidHttpUrl(enteredSource) &&
           CATEGORIES.some(
             (cat) => cat.name.toLowerCase() === enteredCategory.toLowerCase()
           )
       );
     }, 500);
     return () => {
-      console.log("cleanup");
       clearTimeout(identifier);
     };
   }, [enteredText, enteredSource, enteredCategory]);
-
-  // handler function for form submission
-  const submitHandler = (e) => {
-    e.preventDefault();
-    // TODO
-    console.log("FORM SUBMITTED!!");
-    console.log(e);
-    setEnteredText("");
-    setEnteredSource("");
-    setEnteredCategory("default");
-  };
 
   let classNameButton = "btn btn-large";
   if (formIsValid) {
@@ -52,6 +49,31 @@ const NewFactForm = (props) => {
     classNameButton = `${classNameButton} btn--one-color btn-grey`;
   }
 
+  // handler function for form submission
+  const submitHandler = (e) => {
+    // PREVENT DEFAULT
+    e.preventDefault();
+
+    // CREATE A NEW FACT (FORM IS VALID AUTOMATICALLY, OTHERWISE THE USER COULD NOT HAVE SUBMITTED)
+    const newFact = {
+      id: Math.round(Math.random() * 10000),
+      text: enteredText,
+      source: enteredSource,
+      category: enteredCategory,
+      votesInteresting: 0,
+      votesMindblowing: 0,
+      votesFalse: 0,
+      createdIn: new Date().getFullYear(),
+    };
+
+    props.onAddNewFact(newFact);
+
+    // RESET FORM
+    setEnteredText("");
+    setEnteredSource("");
+    setEnteredCategory("default");
+  };
+
   return (
     <form className={styles["fact-form"]} onSubmit={submitHandler}>
       <input
@@ -59,11 +81,12 @@ const NewFactForm = (props) => {
         placeholder="Share a fact..."
         value={enteredText}
         onChange={textChangeHandler}
+        maxLength={200}
       />
       <span>{200 - numChars}</span>
       <input
         type="text"
-        placeholder="Source..."
+        placeholder="Source (URL)..."
         value={enteredSource}
         onChange={sourceChangeHandler}
       />
