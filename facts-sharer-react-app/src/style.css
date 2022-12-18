@@ -39,11 +39,22 @@ ul {
   text-transform: uppercase;
   font-size: 17px;
   padding: 16px 0 13px;
-  background-image: linear-gradient(135deg, #3b82f6, #ef4444, #16a34a, #eab308);
   color: inherit;
   border-radius: 100px;
   cursor: pointer;
   transition: 0.3s;
+}
+
+.btn--rainbow {
+  background-image: linear-gradient(135deg, #3b82f6, #ef4444, #16a34a, #eab308);
+}
+
+.btn--one-color {
+  background-image: none;
+}
+
+.btn-grey {
+  background-color: #78716c;
 }
 
 .btn:hover {

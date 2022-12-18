@@ -1,14 +1,16 @@
 import styles from "./CategoryFilterItem.module.css";
 
 const CategoryFilterItem = ({ category }) => {
+  let classNameButton;
+  if (category.id === 0) {
+    classNameButton = `btn btn--rainbow ${styles["btn-all-categories"]}`;
+  } else {
+    classNameButton = `btn btn--one-color ${styles["btn-category"]}`;
+  }
   return (
     <li className="category">
       <button
-        className={`btn ${
-          category.id === 0
-            ? styles["btn-all-categories"]
-            : styles["btn-category"]
-        }`}
+        className={classNameButton}
         style={{ backgroundColor: `${category.color}` }}
       >
         {category.name}

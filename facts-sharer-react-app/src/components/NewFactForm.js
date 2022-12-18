@@ -67,7 +67,11 @@ const NewFactForm = (props) => {
           </option>
         ))}
       </select>
-      <button className="btn btn-large" type="submit" disabled={!formIsValid}>
+      <button
+        className="btn btn-large btn--rainbow"
+        type="submit"
+        disabled={!formIsValid}
+      >
         Post
       </button>
     </form>
