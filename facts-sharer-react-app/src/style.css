@@ -38,7 +38,7 @@ ul {
   line-height: 1;
   text-transform: uppercase;
   font-size: 17px;
-  padding: 16px 0 16px;
+  padding: 16px 0;
   color: inherit;
   border-radius: 100px;
   cursor: pointer;
@@ -63,7 +63,7 @@ ul {
 
 .btn-large {
   font-size: 20px;
-  padding: 20px 32px 17px;
+  padding: 20px 32px;
 }
 
 .category {
