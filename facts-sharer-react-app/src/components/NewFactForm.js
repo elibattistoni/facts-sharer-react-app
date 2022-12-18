@@ -22,9 +22,12 @@ const NewFactForm = (props) => {
     const identifier = setTimeout(() => {
       console.log("check form validity");
       setFormIsValid(
-        enteredText.trim().length > 5 && enteredSource.includes("https://")
+        enteredText.trim().length > 5 &&
+          enteredSource.includes("https://") &&
+          CATEGORIES.some(
+            (cat) => cat.name.toLowerCase() === enteredCategory.toLowerCase()
+          )
       );
-      // TODO add category validation
     }, 500);
     return () => {
       console.log("cleanup");
@@ -43,6 +46,13 @@ const NewFactForm = (props) => {
     setEnteredCategory("default");
     setRemainingChars(200);
   };
+
+  let classNameButton = "btn btn-large";
+  if (formIsValid) {
+    classNameButton = `${classNameButton} btn--rainbow`;
+  } else {
+    classNameButton = `${classNameButton} btn--one-color btn-grey`;
+  }
 
   return (
     <form className={styles["fact-form"]} onSubmit={submitHandler}>
@@ -67,11 +77,7 @@ const NewFactForm = (props) => {
           </option>
         ))}
       </select>
-      <button
-        className="btn btn-large btn--rainbow"
-        type="submit"
-        disabled={!formIsValid}
-      >
+      <button className={classNameButton} type="submit">
         Post
       </button>
     </form>
