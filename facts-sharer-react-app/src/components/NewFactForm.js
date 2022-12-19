@@ -60,15 +60,19 @@ const NewFactForm = (props) => {
     const postData = async (text, source, category) => {
       //=== make post request
       let { data: newFact, error } = await supabase
-        .from("facts")
+        .from("fact")
         .insert([{ text, source, category }])
         .select();
 
-      //=== extract with destructuring
-      [newFact] = newFact;
+      if (error) {
+        alert("There was a problem sumbitting data");
+      } else {
+        //=== extract with destructuring
+        [newFact] = newFact;
 
-      //=== add new fact to list of facts (state) so that the interface is reloaded without having to perform another get request
-      props.onAddNewFact(newFact);
+        //=== add new fact to list of facts (state) so that the interface is reloaded without having to perform another get request
+        props.onAddNewFact(newFact);
+      }
 
       //=== change again state of uploading and of the form
       setFormIsValid(false); // so that the submit button will return immediately grey (otherwise it was showing first rainbow, then grey)
