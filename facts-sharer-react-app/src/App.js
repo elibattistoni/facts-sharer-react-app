@@ -1,23 +1,30 @@
 import { Fragment, useEffect, useState } from "react";
-import supabase from "./supabase";
 import CategoryFilter from "./components/CategoryFilters";
 import FactsList from "./components/FactsList";
 import Header from "./components/Header";
 import NewFactForm from "./components/NewFactForm";
-import "./style.css";
 import Spinner from "./components/Spinner";
+import supabase from "./supabase";
+import "./style.css";
 
 const App = () => {
   // state of the facts
   const [facts, setFacts] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   // get facts list from database
   useEffect(() => {
     setIsLoading(true);
     const getFactsFromDb = async () => {
-      let { data: factsOnDb } = await supabase.from("facts").select("*");
-      setFacts(factsOnDb);
+      let { data: factsOnDb, error } = await supabase
+        .from("facts")
+        .select("*")
+        .order("votesInteresting", { ascending: false })
+        .limit(1000);
+
+      if (!error) setFacts(factsOnDb);
+      else alert("There was a problem getting data");
+
       setIsLoading(false);
     };
     getFactsFromDb();
