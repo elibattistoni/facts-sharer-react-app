@@ -1,6 +1,6 @@
 import Fact from "./Fact";
 
-const FactsList = ({ facts }) => {
+const FactsList = ({ facts, onUpdateVotes }) => {
   if (facts.length === 0)
     return (
       <p className="message">
@@ -11,7 +11,7 @@ const FactsList = ({ facts }) => {
   const factsList = (
     <ul className="facts-list">
       {facts.map((fact) => (
-        <Fact fact={fact} key={fact.id} />
+        <Fact fact={fact} key={fact.id} onUpdateVotes={onUpdateVotes} />
       ))}
     </ul>
   );

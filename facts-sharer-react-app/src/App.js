@@ -21,7 +21,7 @@ const App = () => {
 
     // create query
     let query = supabase.from("facts").select("*");
-    if (currentCategory != "all") query.eq("category", currentCategory);
+    if (currentCategory !== "all") query.eq("category", currentCategory);
 
     const getFactsFromDb = async () => {
       let { data: factsOnDb, error } = await query
@@ -38,7 +38,6 @@ const App = () => {
 
   //# FILTER HANDLER
   const handlerFilter = (selectedCategory) => {
-    console.log(selectedCategory); //TODO REMOVE
     setCurrentCategory(selectedCategory);
   };
 
@@ -53,6 +52,15 @@ const App = () => {
     setFacts((currentFacts) => [newFact, ...currentFacts]);
   };
 
+  //# UPDATE VOTES HANDLER
+  const updateVotesHandler = (updatedFact) => {
+    setFacts((currentFacts) =>
+      currentFacts.map((fact) =>
+        fact.id === updatedFact.id ? updatedFact : fact
+      )
+    );
+  };
+
   return (
     <Fragment>
       <Header onToggleForm={toggleStateForm} isOpen={formIsVisible} />
@@ -60,7 +68,9 @@ const App = () => {
       <main className="main">
         <CategoryFilter onFilter={handlerFilter} />
         {isLoading && <Spinner />}
-        {!isLoading && facts && <FactsList facts={facts} />}
+        {!isLoading && facts && (
+          <FactsList facts={facts} onUpdateVotes={updateVotesHandler} />
+        )}
       </main>
     </Fragment>
   );
