@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { CATEGORIES } from "../data";
+import supabase from "../supabase";
 import styles from "./NewFactForm.module.css";
+import Spinner from "./Spinner";
 
 const isValidHttpUrl = (string) => {
   let url;
@@ -17,6 +19,7 @@ const NewFactForm = (props) => {
   const [enteredSource, setEnteredSource] = useState("");
   const [enteredCategory, setEnteredCategory] = useState("default");
   const [formIsValid, setFormIsValid] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const numChars = enteredText.length;
 
   // handler functions for text and source
@@ -37,38 +40,43 @@ const NewFactForm = (props) => {
           )
       );
     }, 500);
+
     return () => {
       clearTimeout(identifier);
     };
   }, [enteredText, enteredSource, enteredCategory]);
 
   let classNameButton = "btn btn-large";
-  if (formIsValid) {
-    classNameButton = `${classNameButton} btn--rainbow`;
-  } else {
-    classNameButton = `${classNameButton} btn--one-color btn-grey`;
-  }
+  if (formIsValid) classNameButton = `${classNameButton} btn--rainbow`;
+  else classNameButton = `${classNameButton} btn--one-color btn-grey`;
 
   // handler function for form submission
   const submitHandler = (e) => {
     // PREVENT DEFAULT
     e.preventDefault();
 
-    // CREATE A NEW FACT (FORM IS VALID AUTOMATICALLY, OTHERWISE THE USER COULD NOT HAVE SUBMITTED)
-    const newFact = {
-      id: Math.round(Math.random() * 10000),
-      text: enteredText,
-      source: enteredSource,
-      category: enteredCategory,
-      votesInteresting: 0,
-      votesMindblowing: 0,
-      votesFalse: 0,
-      createdIn: new Date().getFullYear(),
+    //=== change state of uploading
+    setIsUploading(true);
+    const postData = async (text, source, category) => {
+      //=== make post request
+      let { data: newFact, error } = await supabase
+        .from("facts")
+        .insert([{ text, source, category }])
+        .select();
+
+      //=== extract with destructuring
+      [newFact] = newFact;
+
+      //=== add new fact to list of facts (state) so that the interface is reloaded without having to perform another get request
+      props.onAddNewFact(newFact);
+
+      //=== change again state of uploading and of the form
+      setFormIsValid(false); // so that the submit button will return immediately grey (otherwise it was showing first rainbow, then grey)
+      setIsUploading(false); // remove spinner
     };
+    postData(enteredText, enteredSource, enteredCategory);
 
-    props.onAddNewFact(newFact);
-
-    // RESET FORM
+    //=== RESET FORM
     setEnteredText("");
     setEnteredSource("");
     setEnteredCategory("default");
@@ -98,9 +106,16 @@ const NewFactForm = (props) => {
           </option>
         ))}
       </select>
-      <button className={classNameButton} type="submit" disabled={!formIsValid}>
-        Post
-      </button>
+      {!isUploading && (
+        <button
+          className={classNameButton}
+          type="submit"
+          disabled={!formIsValid}
+        >
+          Post
+        </button>
+      )}
+      {isUploading && <Spinner />}
     </form>
   );
 };

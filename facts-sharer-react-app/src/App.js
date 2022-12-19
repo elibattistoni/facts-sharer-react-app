@@ -9,10 +9,10 @@ import "./style.css";
 
 const App = () => {
   //# STATES OF THE APP COMPONENT
-  // state of the facts
   const [facts, setFacts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [currentCategory, setCurrentCategory] = useState("all");
+  const [formIsVisible, setFormIsVisible] = useState(false);
 
   //# RETRIEVE DATA FROM DB
   // get facts list from database
@@ -43,8 +43,6 @@ const App = () => {
   };
 
   //# FORM HANDLER
-  // state of the form
-  const [formIsVisible, setFormIsVisible] = useState(false);
   // change state of the form if the button in the header was clicked
   const toggleStateForm = () => {
     setFormIsVisible((currentState) => !currentState);
