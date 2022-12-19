@@ -1,5 +1,5 @@
 export const CATEGORIES = [
-  { id: 0, name: "All", color: "" },
+  { id: 0, name: "all", color: "" },
   { id: 1, name: "technology", color: "#3b82f6" },
   { id: 2, name: "science", color: "#16a34a" },
   { id: 3, name: "finance", color: "#ef4444" },

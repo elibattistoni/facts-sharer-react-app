@@ -1,11 +1,19 @@
 import { CATEGORIES } from "../data";
 import CategoryFilterItem from "./CategoryFilterItem";
 
-const CategoryFilter = () => {
+const CategoryFilter = ({ onFilter }) => {
+  const clickFilterHandler = (cat) => {
+    onFilter(cat);
+  };
+
   const categoriesList = (
     <ul>
       {CATEGORIES.map((category) => (
-        <CategoryFilterItem category={category} key={category.id} />
+        <CategoryFilterItem
+          category={category}
+          key={category.id}
+          onClickFilter={clickFilterHandler}
+        />
       ))}
     </ul>
   );

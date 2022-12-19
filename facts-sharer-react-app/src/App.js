@@ -8,17 +8,23 @@ import supabase from "./supabase";
 import "./style.css";
 
 const App = () => {
+  //# STATES OF THE APP COMPONENT
   // state of the facts
   const [facts, setFacts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [currentCategory, setCurrentCategory] = useState("all");
 
+  //# RETRIEVE DATA FROM DB
   // get facts list from database
   useEffect(() => {
     setIsLoading(true);
+
+    // create query
+    let query = supabase.from("facts").select("*");
+    if (currentCategory != "all") query.eq("category", currentCategory);
+
     const getFactsFromDb = async () => {
-      let { data: factsOnDb, error } = await supabase
-        .from("facts")
-        .select("*")
+      let { data: factsOnDb, error } = await query
         .order("votesInteresting", { ascending: false })
         .limit(1000);
 
@@ -28,8 +34,15 @@ const App = () => {
       setIsLoading(false);
     };
     getFactsFromDb();
-  }, []);
+  }, [currentCategory]);
 
+  //# FILTER HANDLER
+  const handlerFilter = (selectedCategory) => {
+    console.log(selectedCategory); //TODO REMOVE
+    setCurrentCategory(selectedCategory);
+  };
+
+  //# FORM HANDLER
   // state of the form
   const [formIsVisible, setFormIsVisible] = useState(false);
   // change state of the form if the button in the header was clicked
@@ -37,6 +50,7 @@ const App = () => {
     setFormIsVisible((currentState) => !currentState);
   };
 
+  //# ADD NEW FACT HANDLER
   const addFactHandler = (newFact) => {
     setFacts((currentFacts) => [newFact, ...currentFacts]);
   };
@@ -46,9 +60,9 @@ const App = () => {
       <Header onToggleForm={toggleStateForm} isOpen={formIsVisible} />
       {formIsVisible && <NewFactForm onAddNewFact={addFactHandler} />}
       <main className="main">
-        <CategoryFilter />
+        <CategoryFilter onFilter={handlerFilter} />
         {isLoading && <Spinner />}
-        {!isLoading && <FactsList facts={facts} />}
+        {!isLoading && facts && <FactsList facts={facts} />}
       </main>
     </Fragment>
   );
