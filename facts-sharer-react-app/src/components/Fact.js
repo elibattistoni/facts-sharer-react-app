@@ -38,9 +38,13 @@ const Fact = ({ fact, onUpdateVotes }) => {
     updateFact(voteType);
   };
 
+  const isDisputed =
+    fact.votesInteresting + fact.votesMindblowing < fact.votesFalse;
+
   return (
     <li className={styles.fact}>
       <p>
+        {isDisputed && <span className={styles.disputed}>[⛔️ DISPUTED]</span>}
         {fact.text}
         <a className={styles.source} href={fact.source} target="_blank">
           (Source)
