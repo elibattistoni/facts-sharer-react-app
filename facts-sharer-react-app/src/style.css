@@ -77,3 +77,58 @@ ul {
   font-weight: 600;
   margin-top: 24px;
 }
+
+
+/* === to make the facts list fit in a smaller container */
+/* this code should be above when styling the same elements, but it is here just for learning purposes */
+body {
+  padding: 48px 64px 0;
+}
+
+.main {
+  height: calc(100vh - 48px - 68px - 40px);
+}
+
+.facts-list--container {
+  padding-bottom: 40px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+/* ===== style scrollbars */
+
+.styled-scrollbars {
+  --scrollbar-foreground: #78716c;
+  --scrollbar-background: #44403c;
+  /* Foreground, Background */
+  scrollbar-color: var(--scrollbar-foreground) var(--scrollbar-background);
+}
+
+.styled-scrollbars::-webkit-scrollbar {
+  width: 5px;
+  /* Mostly for vertical scrollbars */
+  /* height: 10px; */
+  /* Mostly for horizontal scrollbars */
+}
+
+.styled-scrollbars::-webkit-scrollbar-thumb {
+  /* Foreground */
+  background: var(--scrollbar-foreground);
+  border-radius: 5px;
+}
+
+.styled-scrollbars::-webkit-scrollbar-track {
+  /* Background */
+  background: var(--scrollbar-background);
+}
+
+@media (max-width: 900px) {
+  .main {
+    /* Fixed in a video text overlay, to fix scrolling issue on small screens */
+    height: auto;
+  }
+
+  .facts-list--container {
+    overflow-y: hidden;
+  }
+}

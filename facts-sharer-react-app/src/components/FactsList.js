@@ -1,4 +1,5 @@
 import Fact from "./Fact";
+import styles from "./FactsList.module.css";
 
 const FactsList = ({ facts, onUpdateVotes }) => {
   if (facts.length === 0)
@@ -9,14 +10,18 @@ const FactsList = ({ facts, onUpdateVotes }) => {
     );
 
   const factsList = (
-    <ul className="facts-list">
+    <ul className={styles["facts-list"]}>
       {facts.map((fact) => (
         <Fact fact={fact} key={fact.id} onUpdateVotes={onUpdateVotes} />
       ))}
     </ul>
   );
 
-  return <section>{factsList}</section>;
+  return (
+    <section className="facts-list--container styled-scrollbars">
+      {factsList}
+    </section>
+  );
 };
 
 export default FactsList;
