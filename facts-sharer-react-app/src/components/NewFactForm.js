@@ -60,7 +60,7 @@ const NewFactForm = (props) => {
     const postData = async (text, source, category) => {
       //=== make post request
       let { data: newFact, error } = await supabase
-        .from("fact")
+        .from("facts")
         .insert([{ text, source, category }])
         .select();
 
